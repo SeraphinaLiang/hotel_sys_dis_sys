@@ -12,7 +12,7 @@ import java.util.*;
 public class BookingManager implements Remote {
 
     //--------------------RMI-binding---------------------------------------------
-    public static void main() throws RemoteException, AlreadyBoundException {
+    public static void main(String[] args) throws RemoteException, AlreadyBoundException {
         // set security manager if non existent
         if(System.getSecurityManager() != null)
             System.setSecurityManager(null);
