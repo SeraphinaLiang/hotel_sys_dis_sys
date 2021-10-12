@@ -1,5 +1,7 @@
 package staff;
 
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,27 +23,37 @@ public class BookingClient extends AbstractScriptedSimpleTest {
 	public BookingClient() {
 		try {
 			//Look up the registered remote instance
-			bm = new BookingManager();
+
+            // set security manager
+            if (System.getSecurityManager() != null)
+                System.setSecurityManager(null);
+
+            // Lookup bookingManager object from RMI registry
+            Registry registry = LocateRegistry.getRegistry();
+            this.bm = (BookingManager)registry.lookup("booking_manager");
+
 		} catch (Exception exp) {
 			exp.printStackTrace();
 		}
 	}
 
+	// use bm remote object to implement the following method
 	@Override
 	public boolean isRoomAvailable(Integer roomNumber, LocalDate date) {
 		//Implement this method
-		return true;
+        return bm.isRoomAvailable(roomNumber,date);
 	}
 
 	@Override
 	public void addBooking(BookingDetail bookingDetail) throws Exception {
 		//Implement this method
+        bm.addBooking(bookingDetail);
 	}
 
 	@Override
 	public Set<Integer> getAvailableRooms(LocalDate date) {
 		//Implement this method
-		return null;
+		return bm.getAvailableRooms(date);
 	}
 
 	@Override
