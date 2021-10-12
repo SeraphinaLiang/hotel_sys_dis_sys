@@ -9,14 +9,14 @@
 
   <!--
     ********************************************************
-       Please set the following two parameters to point 
+       Please set the following two parameters to point
 	   to your server's and client's Main-method classes
 	   Example: "staff.BookingClient"
 	            => Package: staff Classname: BookingClient
-	   The third parameter is filename for the final zip.	   
+	   The third parameter is filename for the final zip.
     ******************************************************** -->
   <property name="main.client" value="staff.BookingClient" />
-  <property name="main.server" value="" />
+  <property name="main.server" value="hotel.BookingManager" />
   <property name="zip.filename" value="rmi" />
   <!--
     ********************************************************
@@ -33,7 +33,7 @@
   <target name="compile" depends="init">
     <javac includeantruntime="false" srcdir="${src}" destdir="${build}"/>
   </target>
-  
+
   <target name="registry.start">
 	<exec spawn="true" executable="rmiregistry" dir="${build}"/>
 	<sleep milliseconds="5000"/>
@@ -49,28 +49,28 @@
 		<arg value="rmiregistry"/>
 	</exec>
   </target>
-    
+
   <target name="run.serveronly">
-	<java fork="true" classname="${main.server}">	
+	<java fork="true" classname="${main.server}">
 		<classpath refid="cp" />
 	</java>
   </target>
 
   <target name="run.clientonly">
-	<java classname="${main.client}">	
+	<java classname="${main.client}">
 		<classpath refid="cp" />
 	</java>
   </target>
 
   <target name="run.both">
-	<java classname="${main.server}">	
+	<java classname="${main.server}">
 		<classpath refid="cp" />
 	</java>
-	<java classname="${main.client}">	
+	<java classname="${main.client}">
 		<classpath refid="cp" />
 	</java>
   </target>
-  
+
   <target name="zip">
 		<delete file="${zip.filename}.zip" quiet="true"/>
 		<zip destfile="${zip.filename}.zip" update="false">
@@ -82,7 +82,7 @@
 			<zipfileset dir="src" prefix="src"/>
 		</zip>
   </target>
-  
+
   <target name="run" depends="compile,registry.start,run.both,registry.stop"/>
   <target name="run-wo-compile" depends="registry.start,run.both,registry.stop" />
 </project>

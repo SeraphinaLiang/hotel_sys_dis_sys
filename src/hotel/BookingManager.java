@@ -11,7 +11,7 @@ import java.util.*;
 
 public class BookingManager implements Remote {
 
-    //--------------------RMI----------------------------------------------
+    //--------------------RMI-binding---------------------------------------------
     public static void main() throws RemoteException, AlreadyBoundException {
         // set security manager if non existent
         if(System.getSecurityManager() != null)
@@ -66,9 +66,22 @@ public class BookingManager implements Remote {
 	}
 
 
-	public void addBooking(BookingDetail bookingDetail) {
+	public void addBooking(BookingDetail bookingDetail) throws Exception {
 		//implement this method
-        //iif not booking the same room, can modify concurrently
+        //if not booking the same room, can modify concurrently
+        Room room=this.rooms[bookingDetail.getRoomNumber()];
+        List<BookingDetail> bookingList = room.getBookings();
+
+        for (BookingDetail bd:bookingList){
+            if (bd.getDate().equals(bookingDetail.getDate())){
+                // book fail
+                throw new Exception("Required Room Not Available Exception");
+            }
+        }
+
+        // room available
+        bookingList.add(bookingDetail);
+        room.setBookings(bookingList);
 
 	}
 
