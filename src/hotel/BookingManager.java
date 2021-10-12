@@ -1,24 +1,27 @@
 package hotel;
 
 import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.*;
 
-public class BookingManager {
+public class BookingManager implements Remote {
 
     //--------------------RMI----------------------------------------------
-    public static void main() throws RemoteException, NotBoundException, AlreadyBoundException {
-        // do the rmi registry for the remote bm object, use by client
+    public static void main() throws RemoteException, AlreadyBoundException {
+        // set security manager if non existent
+        if(System.getSecurityManager() != null)
+            System.setSecurityManager(null);
 
-        Registry registry = LocateRegistry.getRegistry();
         BookingManager bookingManager = new BookingManager();
-        registry.bind("booking_manager", (Remote) bookingManager);
-
+        // do the rmi registry for the remote bm object, use by client
+        Registry registry = LocateRegistry.getRegistry();
+        BookingManager stub=(BookingManager) UnicastRemoteObject.exportObject(bookingManager,0);
+        registry.bind("booking_manager", stub);
     }
 
     //----------------------------Server------------------------------------
