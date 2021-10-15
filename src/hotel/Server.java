@@ -21,8 +21,12 @@ public class Server {
 
             Registry registry = LocateRegistry.createRegistry(8080);
 
-            //-----problem--------
+            /**-----problem--------
+             * BookingManager need to extends UnicastRemoteObject, change bookingManager to stub.
+             * but--- throw object already exported Exception
+             */
             //BookingManager stub = (BookingManager) UnicastRemoteObject.exportObject(bookingManager, 0);
+
             //java.rmi.Naming.rebind("rmi://127.0.0.1:1000/booking", stub);
 
             registry.rebind("booking", bookingManager);
