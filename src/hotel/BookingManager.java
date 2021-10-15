@@ -3,6 +3,7 @@ package hotel;
 import java.io.Serializable;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -63,9 +64,13 @@ public class BookingManager implements Remote, Serializable {
         List<BookingDetail> bookingList = room.getBookings();
 
         for (BookingDetail bd : bookingList) {
-            if (bd.getDate().equals(bookingDetail.getDate())) {
-                // book fail
-                throw new Exception("Required Room Not Available Exception");
+            try {
+                if (bd.getDate().equals(bookingDetail.getDate())) {
+                    // book fail
+                    throw new Exception("Required Room Not Available Exception");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         }
 

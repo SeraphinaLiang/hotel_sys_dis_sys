@@ -1,12 +1,12 @@
 package staff;
 
+import hotel.BookingDetail;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 
-import hotel.BookingDetail;
-
-public abstract class AbstractScriptedSimpleTest {
+public abstract class AbstractScriptedSimpleTest  {
 
 	private final LocalDate today = LocalDate.now();
 
