@@ -9,16 +9,13 @@ import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class BookingManager implements Remote, Serializable {
-// extends UnicastRemoteObject
+public class BookingManager  implements Remote,Serializable {
+//extends UnicastRemoteObject
 
     private Room[] rooms;
 
     // write and read
-    private ReentrantReadWriteLock lockA = new ReentrantReadWriteLock();
-    //  private ReentrantReadWriteLock lockB = new ReentrantReadWriteLock();
-
-   // Semaphore readS = new Semaphore(3);
+    static ReentrantReadWriteLock lockA = new ReentrantReadWriteLock();
 
     public BookingManager() throws RemoteException {
         this.rooms = initializeRooms();
@@ -83,21 +80,9 @@ public class BookingManager implements Remote, Serializable {
             }
         }
 
-        /**  block other read thread
-         *   problem: only one thread can write
-         *   can use synchronized(this){ ... }
-         */
-        lockA.writeLock().lock();
-
-        room.setWriting(true);
-
         // room available
-        bookingList.add(bookingDetail);
-        room.setBookings(bookingList);
+        room.setBookings(bookingDetail);
 
-        room.setWriting(false);
-
-        lockA.writeLock().unlock();
     }
 
     public Set<Integer> getAvailableRooms(LocalDate date) throws RemoteException {

@@ -3,14 +3,11 @@ package hotel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 public class Room implements Serializable {
 
 	private Integer roomNumber;
 	private List<BookingDetail> bookings;
-    // new attribute for concurrent write,whether the room is being writing
-	private Semaphore writing = new Semaphore(1);
 
 	public Room(Integer roomNumber) {
 		this.roomNumber = roomNumber;
@@ -29,16 +26,16 @@ public class Room implements Serializable {
 		return bookings;
 	}
 
-	public void setBookings(List<BookingDetail> bookings) {
-		this.bookings = bookings;
+    /**
+     * when write, all read block.
+     * allow concurrent write for different room
+     * @param bookingDetail
+     */
+	public synchronized void setBookings(BookingDetail bookingDetail) {
+	    BookingManager.lockA.writeLock().lock();
+		this.bookings.add(bookingDetail);
+		BookingManager.lockA.writeLock().unlock();
 	}
 
-    public void setWriting(boolean sign) throws InterruptedException {
-        if (sign){
-            writing.acquire();
-        }else {
-            writing.release();
-        }
-    }
 
 }

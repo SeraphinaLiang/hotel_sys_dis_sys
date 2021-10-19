@@ -3,7 +3,6 @@ package hotel;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 
 public class Server {
     //--------------------RMI-binding---------------------------------------------
@@ -24,8 +23,9 @@ public class Server {
             /**-----problem--------
              * BookingManager need to extends UnicastRemoteObject, change bookingManager to stub.
              * but--- throw object already exported Exception
+             * add a BookingManager Interface implements Remote
              */
-            //BookingManager stub = (BookingManager) UnicastRemoteObject.exportObject(bookingManager, 0);
+            //BookingManagerI stub = (BookingManagerI) UnicastRemoteObject.exportObject(bookingManager, 0);
 
             //java.rmi.Naming.rebind("rmi://127.0.0.1:1000/booking", stub);
 
